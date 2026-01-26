@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+/* --- HOME PAGE CSS --- */
+
+/* --- HERO SECTION --- */
+.hero-section {
+    padding: 180px 20px 100px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: radial-gradient(circle at top right, #fffaf6, transparent);
+}
+
+.hero-info h1 {
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--header-dark);
+    line-height: 1.3;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.hero-info h1 span {
+    color: var(--gold-accent);
+    display: block;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.hero-info p {
+    color: var(--text-grey);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background: var(--gold-accent);
+    color: #fff;
+    padding: 16px 45px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+    box-shadow: 0 10px 20px rgba(195, 147, 124, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(195, 147, 124, 0.4);
+    background: #b07d65;
+}
+
+.hero-image-box img {
+    width: 100%;
+    max-width: 550px;
+    border-radius: 200px 200px 0 0;
+    box-shadow: 20px 20px 0 rgba(234, 217, 201, 0.6);
+    margin-top: 60px;
+    transition: 1s var(--transition-smooth);
+}
+
+.hero-image-box:hover img {
+    border-radius: 40px;
+    transform: scale(1.02);
+}
+
+/* --- CATEGORIES SECTION --- */
+.categories-section {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.category-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+    outline: none;
+}
+
+.category-link:visited,
+.category-link:active,
+.category-link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.section-title {
+    font-size: 30px;
+    font-weight: 300;
+    margin-bottom: 90px;
+    color: var(--text-grey);
+    position: relative;
+    display: inline-block;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--gold-accent);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 90px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.circle-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+}
+
+.circle-wrapper::before,
+.circle-wrapper::after {
+    content: "✿";
+    position: absolute;
+    color: var(--gold-accent);
+    font-size: 19px;
+    opacity: 0.5;
+    z-index: 2;
+    transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.circle-wrapper::before {
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.circle-wrapper::after {
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.image-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(195, 147, 124, 0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    z-index: 5;
+    background: #fff;
+}
+
+.image-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s ease;
+}
+
+.decorative-ring {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 1px solid var(--gold-accent);
+    border-radius: 50%;
+    opacity: 0.2;
+    transition: all 0.8s ease;
+    z-index: 1;
+}
+
+/* HOVER EFFECTS */
+.category-item:hover .image-circle img {
+    transform: scale(1.15) rotate(2deg);
+}
+
+.category-item:hover .decorative-ring {
+    top: -18px;
+    left: -18px;
+    right: -18px;
+    bottom: -18px;
+    opacity: 0.4;
+}
+
+.category-item:hover .circle-wrapper::before {
+    top: -55px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1.3) rotate(180deg);
+}
+
+.category-item:hover .circle-wrapper::after {
+    bottom: -55px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1.3) rotate(-180deg);
+}
+
+.category-item h3 {
+    margin-top: 50px;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 4px;
+    color: var(--text-grey);
+    text-transform: uppercase;
+    transition: 0.4s;
+}
+
+.category-item:hover h3 {
+    color: var(--gold-accent);
+    letter-spacing: 7px;
+}
+
+/* --- HOW TO ORDER SECTION --- */
+.how-to-order-section {
+    padding: 100px 20px;
+    text-align: center;
+    background-color: #e3ebd1;
+}
+
+.steps-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 1100px;
+    margin: 60px auto;
+    gap: 30px;
+}
+
+.step-item {
+    flex: 1;
+    padding: 20px;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    height: 100%;
+}
+
+.step-icon {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.step-icon i {
+    font-size: 80px;
+    color: #ceaf73;
+}
+
+.step-item p {
+    font-size: 15px;
+    color: var(--text-grey);
+    line-height: 1.6;
+    max-width: 250px;
+    margin: 0 auto;
+    min-height: 60px;
+}
+
+.step-arrow {
+    font-size: 30px;
+    color: var(--gold-accent);
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 60px;
+}
+
+.order-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.btn-messenger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--header-dark);
+    background-color: #f7dec2;
+    transition: 0.3s ease;
+}
+
+.btn-messenger i {
+    margin-right: 15px;
+    font-size: 15px;
+}
+
+.btn-messenger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: var(--gold-accent);
+    color: #fff;
+}
+
+/* --- DESKTOP --- */
+@media (min-width: 992px) {
+    .hero-section {
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: left;
+        padding: 200px 20px;
+    }
+    .hero-info { flex: 1; }
+    .hero-image-box {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .hero-info h1 { font-size: 56px; }
+}
+
+/* --- TABLET --- */
+@media (max-width: 991px) {
+    .hero-section { padding: 150px 20px 60px; }
+    .hero-info h1 { font-size: 40px; }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 768px) {
+    :root {
+        --mob-circle-size: 110px;
+        --mob-grid-gap: 40px 15px;
+        --mob-flower-size: 16px;
+        --mob-flower-dist: -28px;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--mob-grid-gap) !important;
+        padding: 0 10px;
+    }
+
+    .circle-wrapper {
+        width: var(--mob-circle-size) !important;
+        height: var(--mob-circle-size) !important;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .circle-wrapper::before,
+    .circle-wrapper::after {
+        font-size: var(--mob-flower-size) !important;
+    }
+
+    .circle-wrapper::before {
+        top: var(--mob-flower-dist) !important;
+    }
+
+    .circle-wrapper::after {
+        bottom: var(--mob-flower-dist) !important;
+    }
+
+    .category-item:hover .circle-wrapper::before {
+        top: calc(var(--mob-flower-dist) - 10px) !important;
+    }
+
+    .category-item:hover .circle-wrapper::after {
+        bottom: calc(var(--mob-flower-dist) - 10px) !important;
+    }
+
+    .hero-info h1 {
+        font-size: clamp(24px, 8vw, 36px) !important;
+        line-height: 1.2;
+    }
+
+    .hero-info p {
+        font-size: clamp(9px, 3vw, 11px);
+    }
+
+    .section-title {
+        font-size: clamp(20px, 6vw, 26px);
+    }
+
+    .category-item h3 {
+        font-size: clamp(11px, 3.5vw, 14px);
+        margin-top: 20px;
+        letter-spacing: 2px;
+        white-space: normal;
+    }
+
+    .steps-grid {
+        flex-direction: column;
+        gap: 50px;
+    }
+
+    .step-arrow {
+        transform: rotate(90deg);
+        margin: -20px 0;
+    }
+
+    .order-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 350px) {
+    .categories-grid {
+        gap: 30px 5px;
+    }
+}
+</style>
+
+<section class="hero-section">
+    <div class="hero-info">
+        <p style="letter-spacing: 2px; font-size: 12px;">PREMIUM QUALITY</p>
+        <h1>Ստեղծեք ձեր <span>անմոռանալի օրվա</span> թվային հրավիրատոմսը: 💌</h1>
+
+        <div class="hero-buttons">
+            <a href="/catalog" class="btn-primary">Պատվիրել</a>
+        </div>
+    </div>
+    <div class="hero-image-box">
+        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000" alt="Wedding Image">
+    </div>
+</section>
+
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Մեր Ծառայությունները</h2>
+        <div class="categories-grid">
+            {% for category in categories %}
+            <a href="/catalog/?category_id={{ category.id }}" class="category-link">
+                <div class="category-item">
+                    <div class="circle-wrapper">
+                        <div class="image-circle">
+                            <img src="{{ category.image_url or 'static/images/default-cat.jpg' }}" alt="{{ category.name }}">
+                        </div>
+                        <div class="decorative-ring"></div>
+                    </div>
+                    <h3>{{ category.name }}</h3>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="how-to-order" class="how-to-order-section">
+    <div class="container">
+        <h2 class="section-title">ԻՆՉՊԵ՞Ս ՊԱՏՎԻՐԵԼ</h2>
+
+        <div class="steps-grid">
+            <div class="step-item">
+                <div class="step-icon">
+                    <i class="fa-regular fa-envelope-open"></i>
+                </div>
+                <p>Ընտրեք Ձեր նախընտրած էլ. հրավիրատոմսը և գրեք մեզ կամ կատարեք պատվեր</p>
+            </div>
+
+            <div class="step-arrow">➜</div>
+
+            <div class="step-item">
+                <div class="step-icon">
+                    <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                <p>Անհրաժեշտ տվյալները ստանալուց հետո մենք անցնում ենք աշխատանքի</p>
+            </div>
+
+            <div class="step-arrow">➜</div>
+
+            <div class="step-item">
+                <div class="step-icon">
+                    <i class="fa-solid fa-check-double"></i>
+                </div>
+                <p>Հաշված օրերի ընթացքում Ձեր էլ. հրավերը կլինի պատրաստ:</p>
+            </div>
+        </div>
+
+        <div class="order-buttons">
+            <a href="#" class="btn-messenger telegram">
+                <i class="fa-brands fa-telegram"></i> TELEGRAM
+            </a>
+            <a href="#" class="btn-messenger whatsapp">
+                <i class="fa-brands fa-whatsapp"></i> WHATSAPP
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+/* --- ԳՈՒՅՆԵՐ ԵՎ ՓՈՓՈԽԱԿԱՆՆԵՐ --- */
+:root {
+    --bg-light: #eef2e4;
+    --text-grey: #787878;
+    --nude-beige: #445E3F;
+    --gold-accent: #7D936C;
+    --header-dark: #333333;
+    --white: #ffffff;
+    --transition-smooth: 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+/* --- ԸՆԴՀԱՆՈՒՐ ԿԱՐԳԱՎՈՐՈՒՄՆԵՐ --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+p, h1, h2, h3, span, a {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Noto Sans Armenian', sans-serif;
+    color: var(--text-grey);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+html {
+    scroll-behavior: smooth;
+}

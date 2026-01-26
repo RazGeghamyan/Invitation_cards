@@ -1,0 +1,219 @@
+<style>
+/* --- HEADER (Լողացող) --- */
+.floating-header {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 1200px;
+    background: var(--header-dark);
+    border-radius: 50px;
+    padding: 10px 25px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.gold-text {
+    color: var(--gold-accent);
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.logo small {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+/* 🍔 Բուրգեր կոճակի ոճը */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1100;
+}
+
+.mobile-menu-btn span {
+    width: 100%;
+    height: 2px;
+    background-color: var(--gold-accent);
+    transition: 0.3s ease;
+}
+
+/* 💻 Desktop տարբերակի հեռախոսահամարի ոճը */
+.header-right .phone-box {
+    display: flex;
+    align-items: center;
+    background: var(--gold-accent);
+    padding: 6px 18px;
+    border-radius: 25px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.header-right .phone-box:hover {
+    background: #a37a65;
+    transform: scale(1.05);
+}
+
+.mobile-only {
+    display: none;
+}
+
+/* Desktop Navigation */
+@media (min-width: 992px) {
+    .main-nav { display: block; }
+    .main-nav ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+    .main-nav a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+}
+
+/* 📱 Մոբայլ մենյուի կարգավորումներ */
+@media (max-width: 991px) {
+    .header-right {
+        display: none !important;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .main-nav {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--header-dark);
+        padding: 100px 30px;
+        transition: var(--transition-smooth);
+        border-radius: 30px 0 0 30px;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+        z-index: 1050;
+    }
+
+    .main-nav.active {
+        right: 0;
+    }
+
+    .main-nav ul {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        list-style: none;
+    }
+
+    .mobile-only {
+        display: block !important;
+        margin-top: 15px;
+    }
+
+    .phone-box-mobile {
+        display: inline-block;
+        background: var(--gold-accent);
+        color: #fff !important;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .main-nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* ❌ X-ի անիմացիան */
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+</style>
+
+<header class="floating-header">
+    <div class="header-content">
+        <div class="logo">
+            <a href="/">
+                <span class="gold-text">HARSANYAC</span>
+                <small>Premium Invitations</small>
+            </a>
+        </div>
+
+        <button class="mobile-menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="/">Գլխավոր</a></li>
+                <li><a href="/catalog">Հրավիրատոմսեր</a></li>
+                <li><a href="/#how-to-order">Ինչպես պատվիրել</a></li>
+                <li><a href="/about">Մեր Մասին</a></li>
+                <li class="mobile-only">
+                    <a href="tel:+37400000000" class="phone-box-mobile">
+                        📞 099 00 00 00
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <a href="tel:+37400000000" class="phone-box">
+                📞 <span class="phone-number">099 00 00 00</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<script>
+    function toggleMenu() {
+        document.querySelector('.main-nav').classList.toggle('active');
+        document.querySelector('.mobile-menu-btn').classList.toggle('active');
+    }
+</script>
