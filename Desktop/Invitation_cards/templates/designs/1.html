@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aram & Ani | Wedding Invitation</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Noto+Sans+Armenian:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #B88A44;
+            --gold-light: #D4AF37;
+            --bg-cream: #F9F7F2;
+            --text-dark: #2C2C2C;
+            --glass: rgba(255, 255, 255, 0.7);
+            --border-radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans Armenian', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow: hidden; /* Սկզբում scroll-ը անջատված է */
+        }
+
+        /* --- 1. ENVELOPE / LOCK SCREEN --- */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* Ձախ և Աջ դռները (Gatefold) */
+        .gate {
+            position: absolute;
+            top: 0; width: 50%; height: 100%;
+            background: #2e2e2e;
+            background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+            transition: transform 1.5s ease-in-out;
+            z-index: 10;
+            border-right: 1px solid #444;
+        }
+        .gate-left { left: 0; transform-origin: left; border-right: 2px solid var(--gold-primary); }
+        .gate-right { right: 0; transform-origin: right; border-left: 2px solid var(--gold-primary); }
+
+        /* Կենտրոնական Կողպեքը */
+        .lock-container {
+            position: absolute;
+            z-index: 20;
+            top: 45%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: opacity 0.5s;
+        }
+
+        .lock-body {
+            font-size: 3.5rem;
+            color: var(--gold-primary);
+            filter: drop-shadow(0 0 10px rgba(184, 138, 68, 0.6));
+        }
+
+        /* Բանալին (Սկզբում ներքևում է) */
+        .key-btn {
+            position: absolute;
+            bottom: 10%; left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 25;
+            animation: float 2s infinite ease-in-out;
+            transition: all 1s ease;
+        }
+
+        .key-icon {
+            font-size: 3rem;
+            color: var(--gold-light);
+            transform: rotate(45deg); /* Բանալին թեք է */
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: -30px; left: 50%; transform: translateX(-50%);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem; white-space: nowrap;
+            letter-spacing: 1px;
+        }
+
+        /* Animation States */
+        .unlocking .key-btn {
+            bottom: 45%; /* Թռչում է վերև */
+            left: 50%;
+            transform: translate(-50%, 15px) rotate(0deg); /* Մտնում է կողպեքի մեջ */
+        }
+
+        .doors-open .gate-left { transform: translateX(-100%); }
+        .doors-open .gate-right { transform: translateX(100%); }
+        .doors-open .lock-container, .doors-open .key-btn { opacity: 0; pointer-events: none; }
+
+        .screen-hidden { display: none; }
+
+
+        /* --- 2. MAIN INVITATION --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 2s ease;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            padding-bottom: 50px;
+        }
+
+        .bg-grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+            opacity: 0.5; z-index: -1;
+        }
+
+        /* Header */
+        header { text-align: center; padding: 60px 20px 40px; }
+        .top-label { font-size: 0.75rem; letter-spacing: 4px; color: #888; text-transform: uppercase; margin-bottom: 15px; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 4rem; color: var(--gold-primary); line-height: 1; margin-bottom: 10px; }
+        .date-box {
+            border-top: 1px solid var(--gold-primary);
+            border-bottom: 1px solid var(--gold-primary);
+            display: inline-block; padding: 8px 30px; margin-top: 20px;
+            font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 2px;
+        }
+
+        /* Arch Photo Area - Քո ուղարկած նկարի ոճով */
+        .hero-arch-wrapper {
+            position: relative;
+            width: 85%;
+            margin: 0 auto 50px;
+            height: 450px;
+        }
+        .hero-arch-border {
+            position: absolute; top: 10px; left: 10px; right: -10px; bottom: -10px;
+            border: 1px solid var(--gold-primary);
+            border-radius: 200px 200px 0 0;
+            z-index: 1;
+        }
+        .hero-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 200px 200px 0 0;
+            position: relative; z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Content Sections */
+        .section-box {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            margin: 20px; padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 10px 40px rgba(184, 138, 68, 0.08);
+        }
+
+        .verse { font-style: italic; color: #666; font-size: 0.95rem; line-height: 1.8; }
+
+        /* Timeline (Vertical) */
+        .timeline-container { position: relative; text-align: left; padding: 20px 0; }
+        .tl-item {
+            display: flex; margin-bottom: 40px; position: relative;
+        }
+        .tl-time {
+            width: 60px; font-weight: bold; color: var(--gold-primary);
+            text-align: right; padding-right: 15px; font-family: 'Cinzel';
+        }
+        .tl-line {
+            width: 2px; background: #ddd; position: relative; margin-right: 20px;
+        }
+        .tl-dot {
+            position: absolute; top: 0; left: -5px; width: 12px; height: 12px;
+            background: var(--gold-primary); border-radius: 50%;
+            border: 2px solid #fff;
+        }
+        .tl-content h3 { font-size: 1.1rem; margin-bottom: 5px; }
+        .tl-content p { font-size: 0.85rem; color: #777; }
+        .tl-btn {
+            display: inline-block; margin-top: 8px;
+            font-size: 0.7rem; color: var(--gold-primary);
+            border: 1px solid var(--gold-primary); padding: 5px 15px;
+            border-radius: 20px; text-decoration: none;
+        }
+
+        /* Locations (Photo Cards) */
+        .loc-grid { display: grid; gap: 20px; }
+        .loc-card {
+            position: relative; border-radius: 15px; overflow: hidden; height: 150px;
+            color: white; display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+        }
+        .loc-card img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: transform 0.5s; }
+        .loc-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 2;
+        }
+        .loc-title { position: relative; z-index: 3; font-size: 1.5rem; font-family: 'Great Vibes'; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .loc-card:hover img { transform: scale(1.1); }
+
+        /* RSVP */
+        .rsvp-form { text-align: left; max-width: 400px; margin: 0 auto; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        input[type="text"], select {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
+            font-family: inherit; background: rgba(255,255,255,0.9);
+        }
+        .radio-options { display: flex; flex-direction: column; gap: 10px; }
+        .radio-lbl { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        input[type="radio"] { accent-color: var(--gold-primary); transform: scale(1.2); }
+
+        .submit-btn {
+            width: 100%; background: var(--gold-primary); color: white;
+            padding: 15px; border: none; border-radius: 50px;
+            font-size: 1rem; font-weight: bold; letter-spacing: 1px;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(184, 138, 68, 0.3);
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #966f33; transform: translateY(-2px); }
+
+        /* Animations */
+        @keyframes float { 0%,100% {transform:translateX(-50%) translateY(0);} 50% {transform:translateX(-50%) translateY(-10px);} }
+
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="gate gate-left"></div>
+        <div class="gate gate-right"></div>
+
+        <div class="lock-container">
+            <i class="fa-solid fa-lock lock-body" id="lock-icon"></i>
+        </div>
+
+        <button class="key-btn" onclick="openInvitation()">
+            <i class="fa-solid fa-key key-icon"></i>
+            <div class="tap-hint">Սեղմեք բանալուն</div>
+        </button>
+    </div>
+
+    <div class="bg-grain"></div>
+
+    <div id="main-content">
+
+        <header data-aos="fade-down">
+            <div class="top-label">ՀԱՐՍԱՆՅԱՑ ՀՐԱՎԵՐ</div>
+            <h1>Aram & Ani</h1>
+            <div class="date-box">10 . 10 . 2025</div>
+        </header>
+
+        <div class="hero-arch-wrapper" data-aos="zoom-in">
+            <div class="hero-arch-border"></div>
+            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1974&auto=format&fit=crop" class="hero-img">
+        </div>
+
+        <section class="section-box" data-aos="fade-up">
+            <h2 style="font-family:'Great Vibes'; font-size:2.5rem; color:var(--gold-primary); margin-bottom:15px;">Սիրելի Հյուրեր</h2>
+            <p class="verse">
+                Սիրով հրավիրում ենք Ձեզ կիսելու մեզ հետ մեր կյանքի ամենակարևոր օրը։
+                Ձեր ներկայությունը կդարձնի մեր տոնն ավելի ջերմ և անմոռանալի։
+            </p>
+        </section>
+
+        <section class="section-box" data-aos="fade-up">
+            <h2 style="font-family:'Cinzel'; margin-bottom:30px; font-size:1.2rem;">ՕՐՎԱ ԾՐԱԳԻՐԸ</h2>
+            <div class="timeline-container">
+
+                <div class="tl-item">
+                    <div class="tl-time">13:30</div>
+                    <div class="tl-line"><div class="tl-dot"></div></div>
+                    <div class="tl-content">
+                        <h3>Հարսի Տուն</h3>
+                        <p>ք. Ստեփանավան, Անդրանիկի 46</p>
+                        <a href="#" class="tl-btn">Քարտեզ</a>
+                    </div>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-time">15:00</div>
+                    <div class="tl-line"><div class="tl-dot"></div></div>
+                    <div class="tl-content">
+                        <h3>Պսակադրություն</h3>
+                        <p>Սուրբ Գայանե եկեղեցի</p>
+                        <a href="#" class="tl-btn">Քարտեզ</a>
+                    </div>
+                </div>
+
+                <div class="tl-item" style="margin-bottom:0;">
+                    <div class="tl-time">18:00</div>
+                    <div class="tl-line"><div class="tl-dot"></div></div>
+                    <div class="tl-content">
+                        <h3>Հարսանյաց Հանդես</h3>
+                        <p>«Դվին» Ռեստորանային համալիր</p>
+                        <a href="#" class="tl-btn">Քարտեզ</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section-box" style="padding: 10px; background:transparent; border:none; box-shadow:none;">
+            <div class="loc-grid">
+                <a href="#" class="loc-card" data-aos="zoom-in">
+                    <img src="https://images.unsplash.com/photo-1548625361-bd87d3f72157?q=80&w=2070&auto=format&fit=crop">
+                    <div class="loc-overlay"></div>
+                    <div class="loc-title">Եկեղեցի</div>
+                </a>
+                <a href="#" class="loc-card" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop">
+                    <div class="loc-overlay"></div>
+                    <div class="loc-title">Ռեստորան</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section-box" id="rsvp" data-aos="fade-up">
+            <h2 style="font-family:'Great Vibes'; font-size:3rem; color:var(--gold-primary);">R.S.V.P</h2>
+            <p style="margin-bottom:25px; font-size:0.9rem;">Խնդրում ենք հաստատել մինչև 30.09.2025</p>
+
+            <div class="rsvp-form">
+                <div class="input-group">
+                    <label>Անուն Ազգանուն</label>
+                    <input type="text" id="gName" placeholder="Գրեք ձեր անունը...">
+                </div>
+
+                <div class="input-group">
+                    <label>Մասնակցություն</label>
+                    <div class="radio-options">
+                        <label class="radio-lbl"><input type="radio" name="attending" value="yes" checked> Սիրով կգամ</label>
+                        <label class="radio-lbl"><input type="radio" name="attending" value="no"> Ցավոք, չեմ կարող</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Հյուրերի քանակ</label>
+                    <select id="gCount">
+                        <option>1 հոգի</option>
+                        <option>2 հոգի</option>
+                        <option>3 հոգի</option>
+                        <option>4 հոգի</option>
+                    </select>
+                </div>
+
+                <button class="submit-btn" onclick="sendToWhatsapp()">ՈՒՂԱՐԿԵԼ</button>
+            </div>
+        </section>
+
+        <footer style="text-align:center; padding:30px; opacity:0.6; font-size:0.8rem;">
+            Aram & Ani 2025
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Start Animations
+        AOS.init({ duration: 1000, once: true });
+
+        function openInvitation() {
+            const lockScreen = document.getElementById('lock-screen');
+            const lockIcon = document.getElementById('lock-icon');
+
+            // 1. Սկսել անիմացիան (բանալին թռչում է)
+            lockScreen.classList.add('unlocking');
+
+            // 2. 0.8 վայրկյան հետո (երբ բանալին տեղ է հասնում), կողպեքը բացվում է
+            setTimeout(() => {
+                lockIcon.classList.remove('fa-lock');
+                lockIcon.classList.add('fa-lock-open');
+
+                // Դռները բացվում են
+                lockScreen.classList.add('doors-open');
+            }, 800);
+
+            // 3. Ամբողջը անհետանում է և կայքը հայտնվում է
+            setTimeout(() => {
+                // Միացնում ենք scroll-ը
+                document.body.style.overflowY = 'auto';
+
+                // Ցույց ենք տալիս հիմնական կայքը
+                const mainContent = document.getElementById('main-content');
+                mainContent.style.opacity = '1';
+
+                // Անջատում ենք lock screen-ը, որ չխանգարի
+                setTimeout(() => {
+                    lockScreen.classList.add('screen-hidden');
+                }, 1500);
+
+            }, 1800);
+        }
+
+        function sendToWhatsapp() {
+            const name = document.getElementById('gName').value;
+            const count = document.getElementById('gCount').value;
+            const isAttending = document.querySelector('input[name="attending"]:checked').value === 'yes' ? "Կգամ" : "Չեմ գա";
+
+            if (!name) { alert("Խնդրում ենք գրել Ձեր անունը"); return; }
+
+            // Փոխիր համարը այստեղ
+            const phone = "37494000000";
+            const text = `RSVP:%0AԱնուն: ${name}%0AՄասնակցություն: ${isAttending}%0AՔանակ: ${count}`;
+
+            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>

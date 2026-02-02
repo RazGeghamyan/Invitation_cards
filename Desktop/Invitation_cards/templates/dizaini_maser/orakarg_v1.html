@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile-First Minimalist Timeline</title>
+    <style>
+        :root {
+            --line-color: #000;
+            --text-color: #333;
+            --bg-color: #fff;
+            --transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Համակարգչի համար */
+            padding: 40px 0;
+            overflow-x: hidden; /* Որպեսզի հեռախոսի վրա կողային սահում չլինի */
+        }
+
+        /* Կենտրոնական ուղղահայաց գիծը */
+        .main-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--line-color);
+            transform: scaleY(0);
+            transform-origin: top;
+            animation: growVertical 1.5s forwards;
+        }
+
+        @keyframes growVertical {
+            to { transform: scaleY(1); }
+        }
+
+        .step {
+            position: relative;
+            width: 100%;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Հորիզոնական ճյուղերը */
+        .branch {
+            position: absolute;
+            top: 50%;
+            width: 30px; /* Փոքրացրել ենք հեռախոսի համար */
+            height: 1px;
+            background: var(--line-color);
+            transform: scaleX(0);
+            transition: var(--transition);
+            transition-delay: 0.5s;
+        }
+
+        .step.visible .branch {
+            transform: scaleX(1);
+        }
+
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            top: -4px;
+            transform: scale(0);
+            transition: var(--transition);
+            transition-delay: 0.8s;
+        }
+
+        .step.visible .dot {
+            transform: scale(1);
+        }
+
+        /* Ձախ կողմ */
+        .left { flex-direction: row-reverse; left: -50%; width: 100%; }
+        .left .branch { right: 0; transform-origin: right; }
+        .left .dot { left: -4px; }
+        .left .text { text-align: right; padding-right: 40px; }
+
+        /* Աջ կողմ */
+        .right { left: 50%; width: 100%; }
+        .right .branch { left: 0; transform-origin: left; }
+        .right .dot { right: -4px; }
+        .right .text { text-align: left; padding-left: 40px; }
+
+        .text {
+            font-size: 15px;
+            color: var(--text-color);
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 140px; /* Սա կարևոր է, որ տեքստը չկպնի էկրանի եզրին */
+        }
+
+        /* Հեռախոսի համար հատուկ կարգավորում (Adaptive) */
+        @media (max-width: 480px) {
+            .text {
+                font-size: 14px;
+                max-width: 120px;
+            }
+            .branch {
+                width: 20px;
+            }
+            .left .text { padding-right: 30px; }
+            .right .text { padding-left: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="timeline-wrapper">
+        <div class="main-line"></div>
+
+        <div class="step left">
+            <div class="branch"><div class="dot"></div></div>
+            <div class="text">Ժամանում և հյուրասիրություն 🥂</div>
+        </div>
+
+        <div class="step right">
+            <div class="branch"><div class="dot"></div></div>
+            <div class="text">Պսակադրության արարողություն 💍</div>
+        </div>
+
+        <div class="step left">
+            <div class="branch"><div class="dot"></div></div>
+            <div class="text">Լուսանկարահանում 📸</div>
+        </div>
+
+        <div class="step right">
+            <div class="branch"><div class="dot"></div></div>
+            <div class="text">Տոնական ընթրիք 🍽️</div>
+        </div>
+
+        <div class="step left">
+            <div class="branch"><div class="dot"></div></div>
+            <div class="text">Տորթի արարողություն 🎂</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                // Ավելացնում ենք փոքր ուշացում սկզբնական բեռնման ժամանակ
+                setTimeout(() => {
+                    observer.observe(step);
+                }, index * 100);
+            });
+        });
+    </script>
+
+</body>
+</html>

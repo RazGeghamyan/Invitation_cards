@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Noto+Sans+Armenian:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark: #1a1a1a;
+            --light: #f8f8f4;
+            --text: #222;
+            --muted: #555;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans Armenian', 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        /* ========== COVER (մատով բացել / swipe) ========== */
+        .cover {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2a2a2a;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+            touch-action: pan-y;
+        }
+        .cover.opened {
+            transform: translateX(100%); /* Բացվում է դեպի աջ */
+            opacity: 0;
+            pointer-events: none;
+        }
+        .cover .cover-names {
+            color: rgba(255,255,255,0.98);
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-top: 50px;
+            text-align: center;
+            font-weight: 500;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .cover .cover-monogram {
+            font-family: 'Great Vibes', 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 20vw, 10rem);
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.02em;
+            margin: auto 0;
+        }
+        .cover .open-wrap {
+            margin-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        /* Սլաքը */
+        .arrow-slider {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            animation: slideRight 1.5s infinite;
+        }
+        @keyframes slideRight {
+            0% { transform: translateX(0); opacity: 0.5; }
+            50% { transform: translateX(10px); opacity: 1; }
+            100% { transform: translateX(0); opacity: 0.5; }
+        }
+
+        /* ========== MAIN ========== */
+        .main {
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* Scroll-reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 24px 80px;
+            background: var(--light);
+        }
+        .hero .photo-wrap {
+            width: 100%;
+            max-width: 320px;
+            border-radius: 200px 200px 0 0; /* Կամարաձև */
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 28px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 1s ease 0.3s, opacity 1s ease 0.3s;
+        }
+        .hero .photo-wrap.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .hero .photo-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .hero .names {
+            font-family: 'Great Vibes', serif;
+            font-size: clamp(3rem, 10vw, 4.5rem);
+            color: var(--text);
+            line-height: 1.1;
+            margin-top: 10px;
+        }
+        .hero .badge {
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        /* Sections */
+        .section { padding: 50px 24px; max-width: 600px; margin: 0 auto; text-align: center; }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .section p { line-height: 1.6; color: var(--muted); margin-bottom: 10px; }
+
+        /* Dark Section (Calendar) */
+        .section.dark {
+            background: var(--dark);
+            color: #f0f0f0;
+            max-width: none;
+            padding: 60px 20px;
+        }
+        .section.dark .section-title { color: #fff; }
+
+        /* Calendar Styles */
+        .calendar-wrap { margin-top: 20px; }
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        .cal-grid span { padding: 8px; }
+        .day-name { color: #888; font-size: 0.8rem; }
+        .heart-day {
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .heart-day::before {
+            content: '❤';
+            position: absolute;
+            color: #d4af37; /* Gold heart */
+            font-size: 1.5rem;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .heart-day .num { position: relative; z-index: 1; color: #fff; font-weight: bold; }
+
+        /* SKETCH LOCATION STYLES (New) */
+        .location-section { padding-top: 60px; }
+        .loc-block { margin-bottom: 60px; }
+
+        /* Սա ապահովում է մատիտով նկարի էֆեկտը */
+        .sketch-img-container {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            position: relative;
+        }
+        .sketch-img {
+            width: 100%;
+            height: auto;
+            /* Mix blend mode-ը օգնում է, որ նկարի սպիտակ ֆոնը ձուլվի էջի հետ */
+            mix-blend-mode: multiply;
+            filter: grayscale(100%) contrast(110%); /* Սև ու սպիտակ էֆեկտ */
+            opacity: 0.9;
+            transition: transform 0.5s ease;
+        }
+        .sketch-img:hover { transform: scale(1.02); }
+
+        .loc-name { font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
+        .loc-addr { font-size: 0.9rem; font-style: italic; margin-bottom: 15px; }
+        .btn-map {
+            display: inline-block;
+            border: 1px solid var(--text);
+            padding: 10px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .btn-map:hover { background: var(--text); color: #fff; }
+
+        /* Countdown */
+        .countdown-box {
+            display: flex; justify-content: center; gap: 20px;
+            margin: 40px 0;
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .cd-item { text-align: center; }
+        .cd-num { font-size: 2rem; font-weight: 600; display: block; }
+        .cd-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Form */
+        .rsvp-section input, .rsvp-section select {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            background: transparent; border: 1px solid #ccc;
+            font-family: inherit;
+        }
+        .btn-send {
+            width: 100%; padding: 15px; background: var(--dark); color: white;
+            border: none; cursor: pointer; letter-spacing: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="cover" id="cover" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1511285560982-1351c4f63155?q=80&w=1974&auto=format&fit=crop');">
+        <p class="cover-names">HARUT & QNARIK</p>
+        <div class="cover-monogram">HQ</div>
+
+        <div class="open-wrap">
+            <div class="arrow-slider">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+        </div>
+    </div>
+
+    <main class="main" id="main">
+
+        <section class="hero">
+            <span class="badge reveal">Wedding Day</span>
+
+            <div class="photo-wrap reveal" id="heroPhoto">
+                <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=2070&auto=format&fit=crop" alt="Couple">
+            </div>
+
+            <h1 class="names reveal">
+                Հարութ <span style="font-size:0.5em">&</span> Քնարիկ
+            </h1>
+            <p class="reveal" style="margin-top:10px; letter-spacing:2px;">20.11.2025</p>
+        </section>
+
+        <section class="section reveal">
+            <h2 class="section-title">Հարգելի՛ հյուրեր</h2>
+            <p>Սիրով հրավիրում ենք Ձեզ ներկա գտնվելու մեր հարսանյաց արարողությանը։</p>
+            <p>Ծանոթացեք ծրագրին և հաստատեք Ձեր ներկայությունը մինչև <strong>նոյեմբերի 15-ը</strong>:</p>
+        </section>
+
+        <section class="section dark reveal">
+            <h2 class="section-title">Նոյեմբեր 2025</h2>
+            <div class="calendar-wrap">
+                <div class="cal-grid">
+                    <span class="day-name">ԵՐԿ</span><span class="day-name">ԵՐՔ</span><span class="day-name">ՉՐՔ</span><span class="day-name">ՀՆԳ</span><span class="day-name">ՈՒՐԲ</span><span class="day-name">ՇԲԹ</span><span class="day-name">ԿԻՐ</span>
+
+                    <span></span><span></span><span></span><span></span><span></span><span>1</span><span>2</span>
+                    <span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                    <span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span>
+                    <span>17</span><span>18</span><span>19</span><span class="heart-day"><span class="num">20</span></span><span>21</span><span>22</span><span>23</span>
+                    <span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section location-section reveal">
+            <h2 class="section-title">Արարողության Վայրերը</h2>
+
+            <div class="loc-block">
+                <p class="loc-intro">Պսակադրությունը տեղի կունենա</p>
+                <div class="loc-name">Հովհաննավանք</div>
+
+                <div class="sketch-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Ohanavank_Surp_Karapet_church.jpg" class="sketch-img" alt="Church Sketch">
+                </div>
+
+                <a href="https://maps.app.goo.gl/..." target="_blank" class="btn-map">Քարտեզ</a>
+            </div>
+
+            <div class="loc-block">
+                <p class="loc-intro">Տոնական խնջույք</p>
+                <div class="loc-name">Palladium Hall</div>
+
+                <div class="sketch-img-container">
+                    <img src="https://thumbs.dreamstime.com/b/wedding-champagne-glasses-sketch-vector-illustration-isolated-white-background-hand-drawn-style-wedding-champagne-glasses-225389656.jpg" class="sketch-img" alt="Hall Sketch">
+                </div>
+
+                <a href="https://maps.app.goo.gl/..." target="_blank" class="btn-map">Քարտեզ</a>
+            </div>
+        </section>
+
+        <section class="section reveal">
+            <h2 class="section-title">Օրվա Ծրագիրը</h2>
+            <div style="border-left: 1px solid #ccc; margin-left: 50%; padding-left: 20px; text-align: left;">
+                <div style="margin-bottom: 30px;">
+                    <strong style="font-size:1.2rem;">13:00</strong><br>
+                    <span style="color:#666;">Փեսայի տուն</span>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <strong style="font-size:1.2rem;">14:30</strong><br>
+                    <span style="color:#666;">Հարսի տուն</span>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <strong style="font-size:1.2rem;">16:00</strong><br>
+                    <span style="color:#666;">Պսակադրություն</span>
+                </div>
+                <div>
+                    <strong style="font-size:1.2rem;">17:30</strong><br>
+                    <span style="color:#666;">Տոնական խնջույք</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section dark reveal">
+            <p style="margin-bottom:20px; text-transform:uppercase;">Մինչև հարսանիքին մնացել է</p>
+            <div class="countdown-box">
+                <div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-label">Օր</span></div>
+                <div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-label">Ժամ</span></div>
+                <div class="cd-item"><span class="cd-num" id="minutes">00</span><span class="cd-label">Րոպե</span></div>
+            </div>
+        </section>
+
+        <section class="section rsvp-section reveal">
+            <p>Ձեզ հետ բերեք ՍԵՐ, ժպիտներ ու անսահման դրական էմոցիաներ։</p>
+            <p style="font-style:italic; margin-top:20px;">Թույլ տանք, որ այդ օրը սպիտակ զգեստով լինի միայն հարսնացուն 🤍</p>
+
+            <hr style="border:0; border-top:1px solid #ddd; margin: 40px 0;">
+
+            <h2 class="section-title">RSVP</h2>
+            <form id="rsvpForm" onsubmit="event.preventDefault(); sendWhatsapp();">
+                <input type="text" id="gName" placeholder="Անուն Ազգանուն" required>
+                <input type="number" id="gCount" placeholder="Հյուրերի քանակ" min="1" required>
+
+                <div style="margin: 20px 0; text-align: left;">
+                    <label><input type="radio" name="attend" value="yes" checked> Այո, կգամ</label><br>
+                    <label><input type="radio" name="attend" value="no"> Ցավոք, չեմ կարողանա</label>
+                </div>
+
+                <div style="margin: 20px 0; text-align: left;">
+                    <p style="margin-bottom:5px;">Ու՞մ կողմից:</p>
+                    <label><input type="radio" name="side" value="groom" checked> Հարութ</label>
+                    <label style="margin-left:15px;"><input type="radio" name="side" value="bride"> Քնարիկ</label>
+                </div>
+
+                <button class="btn-send">ՈՒՂԱՐԿԵԼ</button>
+            </form>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Logic: Swipe or Tap to Unlock ---
+        const cover = document.getElementById('cover');
+        const main = document.getElementById('main');
+        const heroPhoto = document.getElementById('heroPhoto');
+        let startX = 0;
+
+        // Function to open
+        function openInvitation() {
+            cover.classList.add('opened');
+            // Trigger animation for the photo inside main
+            setTimeout(() => {
+                heroPhoto.classList.add('visible');
+            }, 600);
+
+            // Allow scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Tap on arrow/screen
+        cover.addEventListener('click', openInvitation);
+
+        // Touch Swipe Logic
+        cover.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+        });
+        cover.addEventListener('touchend', e => {
+            let endX = e.changedTouches[0].clientX;
+            if (endX - startX > 50) { // If swiped right
+                openInvitation();
+            }
+        });
+
+
+        // --- Logic: Reveal on Scroll ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+        // --- Logic: Countdown ---
+        const weddingDate = new Date("November 20, 2025 16:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+
+            if(diff > 0) {
+                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            }
+        }, 1000);
+
+
+        // --- Logic: Whatsapp ---
+        function sendWhatsapp() {
+            const name = document.getElementById('gName').value;
+            const count = document.getElementById('gCount').value;
+            const attend = document.querySelector('input[name="attend"]:checked').value === 'yes' ? 'Կգամ' : 'Չեմ կարողանա';
+            const side = document.querySelector('input[name="side"]:checked').value === 'groom' ? 'Հարութ' : 'Քնարիկ';
+
+            // Փոխիր համարը այստեղ
+            const phone = "37494000000";
+
+            const msg = `Հյուր: ${name}%0AՔանակ: ${count}%0AՄասնակցություն: ${attend}%0AՀրավիրված: ${side}-ի կողմից`;
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>

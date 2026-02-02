@@ -4,15 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}YINVITE{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bgLight: '#eef2e4',
+                        textGrey: '#787878',
+                        nudeBeige: '#445E3F',
+                        goldAccent: '#7D936C', // Սա քո նոր կանաչն է
+                        headerDark: '#333333',
+                        whiteCustom: '#ffffff',
+                    },
+                    transitionTimingFunction: {
+                        'smooth': 'cubic-bezier(0.2, 1, 0.3, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Armenian:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+
+    <style>
+        /* Հիմնական կարգավորումներ */
+        body {
+            font-family: 'Noto Sans Armenian', sans-serif;
+            background-color: #eef2e4; /* var(--bg-light) */
+            color: #787878; /* var(--text-grey) */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Սահուն անցումներ բոլոր էլեմենտների համար, եթե պետք է */
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-bgLight text-textGrey">
     {% include "header.html" %}
+
     <main>
         {% block content %}{% endblock %}
     </main>
+
     {% include "footer.html" %}
 </body>
 </html>
