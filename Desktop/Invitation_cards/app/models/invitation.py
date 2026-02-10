@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime , JSON
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from core.database import Base
@@ -10,13 +10,13 @@ class Invitation(Base):
     id = Column(Integer, primary_key=True, index=True)
     slug = Column(String(100), unique=True, index=True, nullable=False)
     event_title = Column(String(200), nullable=False)
-    event_date = Column(DateTime)  # Թայմերի և օրացույցի համար 📅
 
-    # {"invite_text": "Սիրով հրավիրում ենք...", "bride_name": "Անի", "groom_name": "Արամ"}
-    content_data = Column(JSON, nullable=True)
-
-    # [{"title": "Եկեղեցի", "time": "15:00", "map_url": "...", "img_url": "..."}, ...]
-    locations_data = Column(JSON, nullable=True)
+    # --- ՆՈՐ ԴԱՇՏԵՐ ---
+    # Հարսանիքի հիմնական օրը (ֆիլտրման և օրացույցի համար)
+    event_date = Column(DateTime, nullable=True)
+    # Բոլոր դինամիկ տեքստերը (couple_names, welcome_text, locations, rsvp_settings)
+    content = Column(JSON, nullable=True)
+    # ------------------
     # Անվտանգության տոկեններ (UUID-ների համար)
     # guest_token-ը կարող է լինել nullable, եթե ուզում ես հանրային հրավիրատոմսեր ունենալ
     guest_token = Column(String(100), unique=True, nullable=True, index=True)

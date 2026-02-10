@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Հրավիրատոմս - Արամ և Նարե</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background: url('https://i.pinimg.com/1200x/c1/a8/22/c1a822e6691df80d2f23b3671b640bef.jpg') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        /* --- ԸՆԴՀԱՆՈՒՐ --- */
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hidden { display: none !important; opacity: 0; }
+
+        /* --- SCRATCH (ՋՆՋՎՈՂ) ՄԱՍ --- */
+        #intro-screen {
+            position: relative;
+            width: 350px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: opacity 0.8s ease;
+            z-index: 10;
+        }
+
+        .hidden-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Great Vibes', cursive;
+            font-size: 35px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            z-index: 1;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            cursor: pointer;
+            touch-action: none;
+            filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .instruction {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+            animation: bounce 2s infinite;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .play-btn {
+            position: absolute;
+            bottom: 10px;
+            background: linear-gradient(45deg, #d4af37, #f3e5ab, #d4af37);
+            color: #5a4a1b;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .play-btn::before { content: '▶'; margin-left: 4px; }
+        .play-btn.visible { opacity: 1; visibility: visible; animation: pulse 1.5s infinite; }
+
+        /* --- ՀԻՄՆԱԿԱՆ ՀՐԱՎԻՐԱՏՈՄՍ --- */
+
+        /* --- MAIN INVITATION BACKGROUND IMAGE --- */
+        #invitation-screen {
+            background: url('https://i.pinimg.com/1200x/2e/3e/e4/2e3ee43e4f9f9c8d7be9d3138de4d021.jpg')
+                        no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* --- NAMES SECTION --- */
+        .names-section {
+            margin-top: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .names-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 64px;
+            color: #ffffff;
+            line-height: 1.1;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+
+        .names-divider {
+            width: 120px;
+            height: 1px;
+            background: rgba(255,255,255,0.6);
+            margin: 20px auto;
+        }
+
+        /* --- PHOTO SECTION --- */
+        .photo-section {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 40px auto;
+        }
+
+        .photo-section img {
+            width: 100%;
+            border-radius: 0; /* առանց սպիտակ շրջանակի */
+            display: block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        /* REMOVE WHITE BACKGROUNDS */
+        .calendar-box,
+        .rsvp-section {
+            background: rgba(0,0,0,0.45);
+        }
+
+
+
+        #invitation-screen {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            overflow-y: scroll;
+            text-align: center;
+            opacity: 0;
+            box-sizing: border-box;
+            transition: opacity 1s ease;
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 transparent;
+        }
+
+        #invitation-screen.show { opacity: 1; }
+
+        .content-wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        /* --- ՆԿԱՐԸ ԵՎ ՏԵՔՍՏԸ ՎՐԱՆ (HERO SECTION) --- */
+        .hero-card {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 500px; /* Նկարի բարձրությունը */
+            margin: 0 auto 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Գրադիենտ շողք ներքևում, որ տեքստը երևա */
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%; /* Նկարի ներքևի 40%-ը */
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 30px;
+            color: #fff;
+        }
+
+        .hero-names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin: 0;
+            line-height: 1;
+            color: #ffd700; /* Ոսկեգույն */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #f0f0f0;
+        }
+
+        /* --- Մնացած տեքստերը --- */
+        .invite-text {
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+            font-weight: 500;
+        }
+
+        /* Կալենդար */
+        .calendar-box {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            color: #fff;
+        }
+        .month {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            font-size: 14px;
+        }
+        .day-name { font-weight: bold; color: #d4af37; }
+        .day { padding: 5px; color: #fff; }
+        .special-day {
+            background: #d4af37;
+            color: #000;
+            border-radius: 50%;
+            font-weight: bold;
+            box-shadow: 0 0 10px #d4af37;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            text-align: left;
+            margin: 40px auto;
+            padding-left: 20px;
+            border-left: 2px solid rgba(212, 175, 55, 0.5);
+            width: 80%;
+        }
+        .event {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        .event::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #d4af37;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.8);
+        }
+        .event-time { font-weight: bold; color: #ffd700; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        .event-desc { font-size: 16px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); margin-top: 5px; }
+        .event-loc { font-size: 14px; color: #ddd; font-style: italic; margin-top: 3px; }
+
+        /* RSVP */
+        .rsvp-section { margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.4); border-radius: 15px; }
+        .rsvp-btn {
+            background: linear-gradient(45deg, #d4af37, #f3e5ab, #d4af37);
+            color: #5a4a1b;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            transition: transform 0.2s;
+        }
+        .rsvp-btn:hover { transform: scale(1.05); }
+
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-8px);} }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="intro-screen">
+            <div class="instruction" id="instruction-box">Ջնջեք սիրտը <br> ▼</div>
+            <div class="hidden-text">Արամ <br> & <br> Նարե</div>
+            <canvas id="scratchCanvas" width="340" height="340"></canvas>
+            <button class="play-btn" id="playBtn" onclick="openInvitation()"></button>
+        </div>
+
+        <div id="invitation-screen" class="hidden">
+            <div class="content-wrapper">
+
+                <div class="hero-card">
+                    <div class="names-section">
+                        <div class="names-title">
+                            Արամ <br> & <br> Նարե
+                        </div>
+                        <div class="names-divider"></div>
+                    </div>
+
+                    <div class="photo-section">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Couple Photo">
+                    </div>
+
+                </div>
+
+                <p class="invite-text">
+                    Սիրով հրավիրում ենք Ձեզ կիսելու մեզ հետ մեր կյանքի կարևորագույն և երջանիկ օրը։
+                </p>
+
+                <div class="calendar-box">
+                    <div class="month">Սեպտեմբեր 2026</div>
+                    <div class="calendar-grid">
+                        <div class="day-name">Երկ</div><div class="day-name">Երք</div><div class="day-name">Չոր</div><div class="day-name">Հինգ</div><div class="day-name">Ուրբ</div><div class="day-name">Շաբ</div><div class="day-name">Կիր</div>
+
+                        <div class="day"></div><div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div>
+                        <div class="day">7</div><div class="day">8</div><div class="day">9</div><div class="day">10</div><div class="day">11</div><div class="day special-day">12</div><div class="day">13</div>
+                        <div class="day">14</div><div class="day">15</div><div class="day">16</div><div class="day">17</div><div class="day">18</div><div class="day">19</div><div class="day">20</div>
+                        <div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div><div class="day">26</div><div class="day">27</div>
+                        <div class="day">28</div><div class="day">29</div><div class="day">30</div><div class="day"></div><div class="day"></div><div class="day"></div><div class="day"></div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <div class="event"><div class="event-time">14:00</div><div class="event-desc">Պսակադրություն</div><div class="event-loc">Սուրբ Սարգիս Եկեղեցի</div></div>
+                    <div class="event"><div class="event-time">17:30</div><div class="event-desc">Հարսանյաց հանդիսություն</div><div class="event-loc">«Դվին» Մյուզիք Հոլլ</div></div>
+                    <div class="event"><div class="event-time">22:00</div><div class="event-desc">Տոնական տորթ</div></div>
+                </div>
+
+                <div class="rsvp-section">
+                    <p>Խնդրում ենք հաստատել մասնակցությունը մինչև Սեպտեմբերի 1-ը</p>
+                    <a href="tel:+37400000000" class="rsvp-btn">Զանգահարել RSVP</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        const playBtn = document.getElementById('playBtn');
+        const instruction = document.getElementById('instruction-box');
+        const introScreen = document.getElementById('intro-screen');
+        const invitationScreen = document.getElementById('invitation-screen');
+
+        let isDrawing = false;
+        let scratchCount = 0;
+
+        function drawHeart() {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(170, 310);
+            ctx.bezierCurveTo(170, 300, 330, 220, 330, 130);
+            ctx.bezierCurveTo(330, 40, 240, 40, 170, 100);
+            ctx.bezierCurveTo(100, 40, 10, 40, 10, 130);
+            ctx.bezierCurveTo(10, 220, 170, 300, 170, 310);
+            const gradient = ctx.createLinearGradient(0, 0, 340, 340);
+            gradient.addColorStop(0, '#BF953F');
+            gradient.addColorStop(0.25, '#FCF6BA');
+            gradient.addColorStop(0.5, '#B38728');
+            gradient.addColorStop(0.75, '#FBF5B7');
+            gradient.addColorStop(1, '#AA771C');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#8a6218';
+            ctx.stroke();
+            ctx.clip();
+            ctx.restore();
+        }
+        drawHeart();
+
+        function getMousePos(canvas, evt) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
+            let clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pos = getMousePos(canvas, e);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
+            ctx.fill();
+            scratchCount++;
+            if (scratchCount > 40) showPlayButton();
+        }
+
+        function startScratch(e) { isDrawing = true; scratch(e); if(instruction) instruction.style.opacity = '0'; }
+        function endScratch() { isDrawing = false; }
+        function showPlayButton() { if (!playBtn.classList.contains('visible')) playBtn.classList.add('visible'); }
+
+        canvas.addEventListener('mousedown', startScratch);
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('mouseup', endScratch);
+        canvas.addEventListener('touchstart', startScratch);
+        canvas.addEventListener('touchmove', scratch);
+        canvas.addEventListener('touchend', endScratch);
+
+        function openInvitation() {
+            introScreen.style.opacity = '0';
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                invitationScreen.classList.remove('hidden');
+                document.body.style.overflow = 'auto';
+                setTimeout(() => { invitationScreen.classList.add('show'); }, 50);
+            }, 800);
+        }
+    </script>
+</body>
+</html>

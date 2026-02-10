@@ -276,6 +276,31 @@
     filter: contrast(0.9) sepia(0.1);
 }
 
+/* Քարտեզի կոճակի դիզայնը */
+.btn-map {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 24px;
+    border: 1px solid var(--text);
+    border-radius: 50px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-map:hover {
+    background: var(--text);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Փոխում ենք նկարի margin-ը, քանի որ տեղը փոխվել է */
+.loc-block .loc-image-container {
+    margin: 0 auto 20px; /* margin-bottom ավելացրեցինք */
+}
+
 /* Մաքուր էսքիզային ոճ (առանց ռամկայի) */
 .sketch-icon {
     display: flex;
@@ -346,6 +371,8 @@
         }
         .timeline-entry .label { font-size: 1rem; color: var(--muted); }
 
+
+
         /* Countdown */
         .countdown-box {
             background: var(--dark);
@@ -374,6 +401,49 @@
             margin-top: 6px;
             opacity: 0.85;
         }
+
+        /* Թերթվող գալերեայի դիզայն */
+.gallery-slider {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.gallery-track {
+    display: flex;
+    gap: 15px; /* Նկարների արանքի հեռավորությունը */
+    overflow-x: auto; /* Թույլ է տալիս հորիզոնական թերթել */
+    padding: 10px 24px 30px; /* Padding, որ ստվերները չկտրվեն */
+
+    /* Մագնիսի էֆեկտը (Scroll Snap) */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* iOS-ի համար սահունություն */
+
+    /* Scrollbar-ը թաքցնելու համար */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Chrome/Safari-ի scrollbar-ը թաքցնել */
+.gallery-track::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-item {
+    min-width: 85%; /* Էկրանի 85%-ը, որ հաջորդը մի քիչ երևա */
+    aspect-ratio: 3/4; /* Նկարի համամասնությունը (ուղղահայաց) */
+    border-radius: 12px;
+    overflow: hidden;
+    scroll-snap-align: center; /* Նկարը կանգնում է կենտրոնում */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Գեղեցիկ ստվեր */
+    position: relative;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Նկարը կտրում է, որ լրիվ լցվի */
+    display: block;
+}
 
         /* Gallery */
         .gallery {
@@ -485,29 +555,31 @@
 
 
     <div class="loc-block">
-    <svg class="loc-icon" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 13a3 3 0 100-6 3 3 0 000 6z" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+
+    <div class="loc-image-container">
+        <img src="https://static.tildacdn.one/tild6161-6236-4161-b664-626436383065/Vector11.svg" alt="Հովհաննեսավանք">
+    </div>
 
     <p class="loc-intro">Պսակադրությունը կանցկացվի</p>
     <p class="loc-name">Հովհաննեսավանք եկեղեցում</p>
     <p class="loc-addr">(գ. Օհանավան)</p>
 
-    <div class="loc-image-container">
-        <img src="https://static.tildacdn.one/tild6161-6236-4161-b664-626436383065/Vector11.svg" alt="Հովհաննեսավանք">
-    </div>
+    <a href="https://www.google.com/maps/search/?api=1&query=Hovhannavank+Monastery" target="_blank" class="btn-map">
+        📍 Տեսնել քարտեզի վրա
+    </a>
 </div>
             <div class="loc-block">
-
+    <div class="loc-image-container">
+        <img src="https://static.tildacdn.one/tild3565-3032-4233-b839-663230356636/Vector.svg" alt="Palladium Hall Restaurant">
+    </div>
 
     <p class="loc-intro">Տոնական խնջույքը կանցկացվի</p>
     <p class="loc-name">«Palladium Hall» ռեստորանում</p>
     <p class="loc-addr">(Ջրվեժ, Թևոսյան փող., 117/5)</p>
 
-    <div class="loc-image-container">
-        <img src="https://static.tildacdn.one/tild3565-3032-4233-b839-663230356636/Vector.svg" alt="Palladium Hall Restaurant">
-    </div>
+    <a href="https://www.google.com/maps/search/?api=1&query=Palladium+Hall+Yerevan" target="_blank" class="btn-map">
+        📍 Տեսնել քարտեզի վրա
+    </a>
 </div>
         </section>
 
@@ -529,13 +601,26 @@
             <div class="units"><span>օր</span><span>ժամ</span><span>րոպե</span><span>վրկ</span></div>
         </div>
 
-        <section class="section reveal">
-            <h2 class="section-title">Մենք</h2>
-            <div class="gallery">
-                <div class="item full reveal"><img src="/static/images/design2/photo3.png" alt="Հարս ու փեսա"></div>
-            </div>
-        </section>
+<section class="section reveal">
+    <h2 class="section-title">Մենք</h2>
 
+    <div class="gallery-slider">
+        <div class="gallery-track">
+            <div class="gallery-item">
+                <img src="https://i.pinimg.com/736x/1c/d6/e1/1cd6e146cb0e3dc67b3c7cea870295fe.jpg" alt="Զույգ 1">
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://i.pinimg.com/736x/b2/5b/b0/b25bb078439269e056c8978c85ef43ca.jpg" alt="Զույգ 2">
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://i.pinimg.com/736x/1c/05/ae/1c05aefd5ed425eb3da6083620df68f7.jpg" alt="Զույգ 3">
+            </div>
+
+            </div>
+    </div>
+</section>
         <section class="section details-text reveal">
             <p>Խնդրում ենք հաստատել Ձեր ներկայությունը մինչև <strong>նոյեմբերի 15-ը</strong>:</p>
             <p>Ձեզ հետ բերեք ՍԵՐ, ժպիտներ ու անսահման դրական էմոցիաներ, ինչպես նաև հարմարավետ կոշիկներ՝ պարելու համար։</p>
