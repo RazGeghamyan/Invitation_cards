@@ -465,7 +465,7 @@
             background: transparent; font-size: 1rem; font-family: inherit;
         }
         .form-group input:focus { outline: none; border-bottom-color: var(--text); }
-        .radio-group, .checkbox-group { display: flex; flex-direction: column; gap: 12px; }
+        .radio-group,
         .radio-item, .checkbox-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .btn-send {
             width: 100%; padding: 16px; background: var(--text); color: #fff; border: none;
@@ -645,13 +645,7 @@
                         <label class="radio-item"><input type="radio" name="attending" value="no"> Ցավոք, չեմ կարողանա</label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Ու՞մ կողմից եք հրավիրված</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item"><input type="checkbox" name="invited_by" value="Արմեն"> Արմեն</label>
-                        <label class="checkbox-item"><input type="checkbox" name="invited_by" value="Լուսինե"> Լուսինե</label>
-                    </div>
-                </div>
+
                 <button type="submit" class="btn-send">Ուղարկել</button>
             </form>
 
