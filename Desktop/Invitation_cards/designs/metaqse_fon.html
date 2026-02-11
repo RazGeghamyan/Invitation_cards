@@ -6,106 +6,188 @@
     <title>Հրավիրատոմս - Արմեն և Լուսինե</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Noto+Sans+Armenian:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --dark: #1a1a1a;
-            --light: #f8f8f4;
-            --text: #222;
-            --muted: #555;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+/* =========================================
+   1. ՀԻՄՆԱԿԱՆ ԿԱՐԳԱՎՈՐՈՒՄՆԵՐ (ՉՋՆՋԵԼ)
+   ========================================= */
+:root {
+    --dark: #1a1a1a;
+    --light: #f8f8f4;
+    --text: #222;
+    --muted: #555;
+}
 
-        body {
-            font-family: 'Noto Sans Armenian', 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-            /* Ավելացվող մասը */
-            background-image: linear-gradient(rgba(248, 248, 244, 0.8), rgba(248, 248, 244, 0.8)),
-                              url('https://i.pinimg.com/736x/d7/41/cc/d741ccdfd0e6ec9bdad9f44494bbfa9c.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+html { scroll-behavior: smooth; }
 
-            color: var(--text);
-        }
+body {
+    font-family: 'Noto Sans Armenian', 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 
-        /* ========== COVER ========== */
-        .cover {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #2a2a2a;
+    /* --- ԱՅՍՏԵՂ ԿԱՏԱՐՎԵՑ ՓՈՓՈԽՈՒԹՅՈՒՆԸ --- */
+    /* Հինը՝ background-color: var(--light);  <- սա ջնջեցինք */
 
-            /* Շապիկի նկարը (Cover) */
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('cover_new.jpg');
+    /* Նորը՝ դնում ենք նկարը */
+    background: url('https://i.pinimg.com/1200x/c1/a8/22/c1a822e6691df80d2f23b3671b640bef.jpg') no-repeat center center fixed;
 
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
-            touch-action: pan-y;
-        }
-        .cover.opened {
-            transform: translateX(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
+    /* Ապահովում ենք, որ նկարը լրիվ ծածկի էկրանը ու չձգվի */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /* ---------------------------------------- */
 
-        .cover .cover-names {
-            color: rgba(255,255,255,0.98);
-            font-size: clamp(1rem, 4vw, 1.4rem);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-top: 40px;
-            text-align: center;
-            font-weight: 500;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .cover .cover-monogram {
-            font-family: 'Great Vibes', 'Cormorant Garamond', serif;
-            font-size: clamp(5rem, 25vw, 12rem);
-            color: rgba(255,255,255,0.4);
-            letter-spacing: 0.02em;
-            margin: auto 0;
-        }
-        .cover .open-wrap {
-            margin-bottom: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+    color: var(--text);
+}
+/* =========================================
+   2. COVER - ՍԿԶԲՆԱԿԱՆ ԷԿՐԱՆ (ՆՈՐ, ՈՒՂՂՎԱԾ)
+   ========================================= */
+/* --- COVER (Հիմնական կոնտեյներ) --- */
+.cover {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2000;
+    background-color: #111;
+    overflow: hidden; /* Կարևոր է: Դուրս եկած մասերը կտրում է */
 
-        /* Բացել կոճակի անիմացիա (Pulse) */
-        @keyframes pulse-btn {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            50% { transform: scale(1.08); box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.4); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
+    /* ԿԵՆՏՐՈՆԱՑՈՒՄ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 
-        .cover .open-btn {
-            padding: 16px 56px;
-            border: 2px solid rgba(255,255,255,0.9);
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            font-size: 1.1rem;
-            letter-spacing: 0.15em;
-            cursor: pointer;
-            font-family: inherit;
-            text-transform: uppercase;
-            backdrop-filter: blur(4px);
-            animation: pulse-btn 2s infinite ease-in-out;
-            transition: background 0.3s;
-        }
-        .cover .open-btn:hover {
-            background: rgba(255,255,255,0.3);
-            animation: none;
-        }
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+/* --- ՆՈՐ: ՖՈՆԻ ՆԿԱՐԸ (Չի լոճվում) --- */
+.cover-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Ամենակարևոր մասը. պահպանում է նկարի համամասնությունը */
+    object-fit: cover;
+
+    /* Դիրքը՝ Կենտրոն (կարող ես փոխել 'top center', եթե գլուխները կտրվում են) */
+    object-position: center;
+
+    z-index: -2; /* Ամենաներքևում */
+}
+
+/* --- ՆՈՐ: ՄԳԱՑՆՈՂ ՇԵՐՏ --- */
+.cover-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* 40% սև */
+    z-index: -1; /* Նկարի վրա, բայց կնիքի տակ */
+}
+
+.cover.opened {
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
+/* --- ԿՆԻՔԻ ԿՈՆՏԵՅՆԵՐ --- */
+.seal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    animation: floatSeal 3s ease-in-out infinite;
+}
+
+@keyframes floatSeal {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* --- ԱՐԾԱԹԱԳՈՒՅՆ ԿՆԻՔ --- */
+.wax-seal {
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #b0b0b0); /* Արծաթ */
+    border-radius: 50%;
+
+    /* 3D Էֆեկտ */
+    box-shadow:
+        0 4px 0 #7a7a7a,
+        0 20px 40px rgba(0,0,0,0.6),
+        inset 0 0 15px rgba(255,255,255,0.9);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* Շրջանակ կնիքի շուրջ (Pulse) */
+.wax-seal::after {
+    content: '';
+    position: absolute;
+    top: -12px; left: -12px; right: -12px; bottom: -12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(0.85); opacity: 0.8; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Hover էֆեկտ */
+.wax-seal:hover {
+    transform: scale(1.05);
+    background: radial-gradient(circle at 30% 30%, #ffffff, #c0c0c0);
+    box-shadow: 0 6px 0 #7a7a7a, 0 25px 50px rgba(0,0,0,0.7);
+}
+
+.wax-seal:active {
+    transform: scale(0.95);
+}
+
+/* Տառերը կնիքի վրա (AN) */
+.seal-initials {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #444;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+    user-select: none;
+    margin-top: 5px;
+}
+
+/* --- Հուշող տեքստ --- */
+.tap-hint {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    animation: fadeInOut 2s infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* =========================================
+   ԱՅՍՏԵՂԻՑ ՆԵՐՔԵՎ ԹՈՂ ՔՈ ՀԻՆ ԿՈԴԸ
+   (Օրացույցը, Timeline-ը և այլն)
+   ========================================= */
+
+
 
         /* ========== MAIN ========== */
         .main {
@@ -335,6 +417,149 @@
 .sketch-icon svg:hover {
     transform: scale(1.05);
     opacity: 1;
+}
+
+/* --- Նոր Օրացույցի Ոճերը --- */
+/* --- Մաքրում ենք ավելորդ ֆոնը --- */
+.custom-calendar-section {
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.date-header-block {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Վերնագրերը (Նոյեմբեր, 2026) --- */
+.main-date-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; /* Մի փոքր էլ մեծացրի */
+    font-weight: 700;
+    color: #000; /* Մուգ սև */
+    margin: 0;
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1); /* Սպիտակ լուսավորում */
+}
+
+.year-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem; /* 2026-ը մեծացրի */
+    font-weight: 600;
+    color: #1a1a1a; /* Մուգ գույն */
+    letter-spacing: 0.1em;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+    background: transparent !important; /* Հանում ենք սպիտակ ֆոնը */
+}
+
+/* --- Օրերի շարքը --- */
+.mini-calendar-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* --- Սովորական օրեր (13, 14, 16, 17) --- */
+.mini-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #000; /* Սև գույն */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); /* Որ պարզ երևա */
+}
+
+.mini-day .d-name {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 2px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.mini-day .d-num {
+    font-size: 1.4rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+}
+
+/* --- ԱԿՏԻՎ ՍՐՏԻԿՈՎ ՕՐԸ (15) --- */
+.active-heart {
+    position: relative;
+    width: 85px;  /* ՄԵԾԱՑՐԵԼ ԵՄ (60-ից 85) */
+    height: 85px; /* ՄԵԾԱՑՐԵԼ ԵՄ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+}
+
+/* Սրտիկի անիմացիան */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.1); } /* Թրթռոցը մի փոքր մեղմացրի, որ տեքստը չկորի */
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+.heart-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    animation: heartbeat 2s infinite ease-in-out;
+}
+
+.heart-bg svg {
+    width: 100%;
+    height: 100%;
+    fill: #d16d6d; /* Ավելի հագեցած կարմիր/վարդագույն */
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.25));
+}
+
+/* Տեքստը սրտիկի մեջ */
+.heart-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff !important; /* Սպիտակ տեքստ */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3); /* Թեթև ստվեր տեքստին */
+    margin-top: -6px; /* Կենտրոնացում */
+}
+
+.active-heart .d-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 0;
+    opacity: 0.95;
+    color: #fff;
+}
+
+.active-heart .d-num {
+    font-size: 1.8rem; /* Թիվը մեծացրի */
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+}
+
+/* Responsive (Մոբայլի համար) */
+@media (max-width: 400px) {
+    .mini-calendar-row { gap: 8px; }
+    .active-heart { width: 75px; height: 75px; } /* Մոբայլում էլ է մեծ */
+    .mini-day .d-num { font-size: 1.2rem; }
+    .active-heart .d-num { font-size: 1.6rem; }
 }
 
         /* Timeline */
@@ -690,16 +915,26 @@
     </style>
 </head>
 <body>
-    <div class="cover has-bg" id="cover">
-        <p class="cover-names">Արամ և Նարե</p>
-        <div class="cover-monogram">AN</div>
-        <div class="open-wrap">
-            <button type="button" class="open-btn" id="openBtn" aria-label="Բացել հրավիրատոմսը">Բացել</button>
+    <div class="cover" id="cover">
+
+        <img src="https://i.pinimg.com/736x/88/69/5a/88695ae26b6cd71ae935addb4001ec68.jpg"
+             class="cover-bg-img"
+             alt="Cover Background">
+
+        <div class="cover-overlay"></div>
+
+        <div class="seal-container">
+            <div class="wax-seal silver" id="openBtn">
+                <span class="seal-initials">AN</span>
+            </div>
+            <p class="tap-hint">Սեղմեք բացելու համար</p>
         </div>
+
     </div>
 
     <main class="main" id="main">
         <section class="hero">
+
             <span class="badge hero-text-reveal" id="heroBadge">Wedding day</span>
             <div class="photo-wrap hero-photo-reveal" id="heroPhoto">
                 <img src="https://i.pinimg.com/736x/18/bf/18/18bf183e4b0dd56c159e0954a2d5c438.jpg" alt="Զույգի նկար">
@@ -717,18 +952,42 @@
             <p>Ծանոթացեք ծրագրին և հաստատեք Ձեր ներկայությունը մինչև <strong>նոյեմբերի 15-ը</strong>:</p>
         </section>
 
-        <section class="section dark reveal">
-            <div class="section-inner">
-                <h2 class="section-title">Նոյեմբեր 2026</h2>
-                <div class="calendar-wrap">
-                    <div class="cal-grid">
-                        <span class="day-name">ԵՐԿ</span><span class="day-name">ԵՐՔ</span><span class="day-name">ՉՐՔ</span><span class="day-name">ՀՆԳ</span><span class="day-name">ՈՒՐԲ</span><span class="day-name">ՇԲԹ</span><span class="day-name">ԿԻՐ</span>
-                        <span class="day"></span><span class="day"></span><span class="day"></span><span class="day"></span><span class="day"></span><span class="day"></span><span class="day">1</span>
-                        <span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span>
-                        <span class="day">9</span><span class="day">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day heart-day"><span class="num">15</span></span>
-                        <span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span>
-                        <span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span>
-                        <span class="day">30</span>
+        <section class="section reveal custom-calendar-section">
+            <div class="date-header-block">
+                <h2 class="main-date-title">Նոյեմբեր</h2>
+                <p class="year-subtitle">2026</p>
+
+                <div class="mini-calendar-row">
+                    <div class="mini-day">
+                        <span class="d-name">Ուրբ</span>
+                        <span class="d-num">13</span>
+                    </div>
+
+                    <div class="mini-day">
+                        <span class="d-name">Շբթ</span>
+                        <span class="d-num">14</span>
+                    </div>
+
+                    <div class="mini-day active-heart">
+                        <div class="heart-bg">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </div>
+                        <div class="heart-content">
+                            <span class="d-name">Կիր</span>
+                            <span class="d-num">15</span>
+                        </div>
+                    </div>
+
+                    <div class="mini-day">
+                        <span class="d-name">Երկ</span>
+                        <span class="d-num">16</span>
+                    </div>
+
+                    <div class="mini-day">
+                        <span class="d-name">Երք</span>
+                        <span class="d-num">17</span>
                     </div>
                 </div>
             </div>
@@ -831,13 +1090,7 @@
                         <label class="radio-item"><input type="radio" name="attending" value="no"> Ցավոք, չեմ կարողանա</label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Ու՞մ կողմից եք հրավիրված</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item"><input type="checkbox" name="invited_by" value="Արմեն"> Արմեն</label>
-                        <label class="checkbox-item"><input type="checkbox" name="invited_by" value="Լուսինե"> Լուսինե</label>
-                    </div>
-                </div>
+
                 <button type="submit" class="btn-send">Ուղարկել</button>
             </form>
 
