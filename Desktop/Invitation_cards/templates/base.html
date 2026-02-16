@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light">
+    <meta name="theme-color" content="#eef2e4">
+
     <title>{% block title %}YINVITE{% endblock %}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,7 +20,7 @@
                         bgLight: '#eef2e4',
                         textGrey: '#787878',
                         nudeBeige: '#445E3F',
-                        goldAccent: '#7D936C', // Սա քո նոր կանաչն է
+                        goldAccent: '#7D936C',
                         headerDark: '#333333',
                         whiteCustom: '#ffffff',
                     },
@@ -33,23 +38,43 @@
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
 
     <style>
-        /* Հիմնական կարգավորումներ */
-        body {
-            font-family: 'Noto Sans Armenian', sans-serif;
-            background-color: #eef2e4; /* var(--bg-light) */
-            color: #787878; /* var(--text-grey) */
+        /* Ստիպում ենք բրաուզերին հասկանալ, որ կայքը միայն լուսավոր է */
+        :root {
+            color-scheme: light only !important;
+        }
+
+        /* Հիմնական կարգավորումներ + Samsung-ի հակաթույնը (gradient) */
+        html, body {
+            font-family: 'Noto Sans Armenian', sans-serif !important;
+            background-color: #eef2e4 !important;
+            /* Գաղտնիքը սա է. նկարը բրաուզերը չի կարող սևացնել */
+            background-image: linear-gradient(#eef2e4, #eef2e4) !important;
+            color: #787878 !important;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
         }
 
-        /* Սահուն անցումներ բոլոր էլեմենտների համար, եթե պետք է */
+        /* Եթե այնուամենայնիվ փորձի միացնել Dark Mode, նորից ստիպում ենք մեր գույները */
+        @media (prefers-color-scheme: dark) {
+            html, body {
+                background-color: #eef2e4 !important;
+                background-image: linear-gradient(#eef2e4, #eef2e4) !important;
+                color: #787878 !important;
+            }
+        }
+
         * {
             box-sizing: border-box;
         }
 
         html {
             scroll-behavior: smooth;
+        }
+
+        /* Header-ի տակ ազատ տեղ թողնելու համար anchor հղումների դեպքում */
+        #about-us, #how-to-order, #about {
+            scroll-margin-top: 100px;
         }
     </style>
 </head>
