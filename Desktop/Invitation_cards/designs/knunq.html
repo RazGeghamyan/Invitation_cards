@@ -265,6 +265,21 @@
            ԾՐԱԳԻՐ & ՔԱՐՏԵԶ (LOCATION SECTION)
         ========================================= */
 
+        /* ԺԱՄԵՐԻ ԴԻԶԱՅՆԸ ՔԱՐՏԵԶԻ ԲԱԺՆՈՒՄ */
+        .loc-time {
+            font-family: 'Noto Serif Armenian', serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #000000;
+            margin-top: 5px;
+            margin-bottom: 10px; /* Որպեսզի հասցեից մի փոքր բարձր մնա */
+            padding: 3px 15px;
+            display: inline-block;
+            border-top: 1px solid #000;    /* Էլեգանտ գծեր վերևից... */
+            border-bottom: 1px solid #000; /* ...և ներքևից */
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+        }
+
         .location-section {
             text-align: center;
             padding: 40px 15px;
@@ -482,15 +497,17 @@
 
     <div class="fixed-bg"></div>
 
-    <audio id="bgMusic" loop>
-        <source src="knunqi_erg.mp3" type="audio/mpeg">
-    </audio>
 
-    <button class="music-btn muted" id="musicToggle" aria-label="Միացնել/Անջատել երգը">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
-    </button>
+        <audio id="bgMusic" loop>
+            <source src="{{ invitation.music_url }}" type="audio/mpeg">
+        </audio>
+
+        <button class="music-btn muted" id="musicToggle" aria-label="Միացնել/Անջատել երգը">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+        </button>
+
 
     <main class="main" id="main">
 
@@ -530,40 +547,46 @@
         </div>
 
 
-<section class="location-section reveal">
-                <div class="location-header">
-                    <h2 class="loc-title">Location</h2>
-                    <p class="loc-sub">for you</p>
+        <section class="location-section reveal">
+            <div class="location-header">
+                <h2 class="loc-title">Location</h2>
+                <p class="loc-sub">for you</p>
+            </div>
+
+            <div class="loc-block">
+                <div class="loc-image-container" style="max-width: 100px; margin: 0 auto 15px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/13807/13807617.png" alt="Հովհաննեսավանք">
                 </div>
 
+                <p class="loc-intro">Պսակադրությունը կանցկացվի</p>
+                <p class="loc-name">Սուրբ Սարգիս եկեղեցում</p>
 
-        <div class="loc-block">
-        <div class="loc-image-container" style="max-width: 100px; margin: 0 auto 15px;">
-            <img src="https://cdn-icons-png.flaticon.com/128/13807/13807617.png" alt="Հովհաննեսավանք">
-        </div>
+                <p class="loc-time">Սկիզբը՝ 15:00</p>
 
-        <p class="loc-intro">Պսակադրությունը կանցկացվի</p>
-        <p class="loc-name">Սուրբ Սարգիս եկեղեցում</p>
-        <p class="loc-addr">(Սբ. Սարգիս)</p>
+                <p class="loc-addr">(Սբ. Սարգիս)</p>
 
-        <a href="https://www.google.com/maps/search/%D5%BD%D5%B8%D6%82%D6%80%D5%A2+%D5%BD%D5%A1%D6%80%D5%A3%D5%AB%D5%BD+%D5%A5%D5%AF%D5%A5%D5%B2%D5%A5%D6%81%D5%AB/@40.2695719,44.3861389,40489m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDIxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-map">
-            📍 Տեսնել քարտեզի վրա
-        </a>
-    </div>
-                <div class="loc-block">
-        <div class="loc-image-container" style="max-width: 100px; margin: 0 auto 15px;">
-            <img src="https://cdn-icons-png.flaticon.com/128/7117/7117781.png" alt="Palladium Hall Restaurant">
-        </div>
+                <a href="https://www.google.com/maps/search/%D5%BD%D5%B8%D6%82%D6%80%D5%A2+%D5%BD%D5%A1%D6%80%D5%A3%D5%AB%D5%BD+%D5%A5%D5%AF%D5%A5%D5%B2%D5%A5%D6%81%D5%AB/@40.2695719,44.3861389,40489m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDIxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-map">
+                    📍 Տեսնել քարտեզի վրա
+                </a>
+            </div>
 
-        <p class="loc-intro">Տոնական խնջույքը կանցկացվի</p>
-        <p class="loc-name">«Palladium Hall» ռեստորանում</p>
-        <p class="loc-addr">(Ջրվեժ, Թևոսյան փող., 117/5)</p>
+            <div class="loc-block">
+                <div class="loc-image-container" style="max-width: 100px; margin: 0 auto 15px;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/7117/7117781.png" alt="Palladium Hall Restaurant">
+                </div>
 
-        <a href="https://www.google.com/maps/search/?api=1&query=Palladium+Hall+Yerevan" target="_blank" class="btn-map">
-            📍 Տեսնել քարտեզի վրա
-        </a>
-    </div>
-</section>
+                <p class="loc-intro">Տոնական խնջույքը կանցկացվի</p>
+                <p class="loc-name">«Palladium Hall» ռեստորանում</p>
+
+                <p class="loc-time">Սկիզբը՝ 17:30</p>
+
+                <p class="loc-addr">(Ջրվեժ, Թևոսյան փող., 117/5)</p>
+
+                <a href="https://www.google.com/maps/search/?api=1&query=Palladium+Hall+Yerevan" target="_blank" class="btn-map">
+                    📍 Տեսնել քարտեզի վրա
+                </a>
+            </div>
+        </section>
 
         <div class="section-wrapper details-text reveal">
             <h2 class="section-title">Մանրամասներ</h2>
@@ -641,26 +664,29 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // --- Երաժշտության կառավարում ---
+            // --- Երաժշտության կառավարում ---
             const bgMusic = document.getElementById('bgMusic');
             const musicToggle = document.getElementById('musicToggle');
-            let isMusicPlaying = false; // Սկզբում անջատված է
+            let isMusicPlaying = false;
 
-            musicToggle.addEventListener('click', function() {
-                if(isMusicPlaying) {
-                    bgMusic.pause();
-                    musicToggle.classList.add('muted'); // Ավելացնում է գիծը
-                    musicToggle.style.opacity = '0.6';
-                } else {
-                    bgMusic.play().then(() => {
-                        musicToggle.classList.remove('muted'); // Հեռացնում է գիծը
-                        musicToggle.style.opacity = '1';
-                    }).catch(e => {
-                        console.log("Չհաջողվեց միացնել երգը:", e);
-                    });
-                }
-                isMusicPlaying = !isMusicPlaying;
-            });
-
+            // Ստուգում ենք, արդյոք կոճակը գոյություն ունի (եթե music_url չկա, կոճակն էլ չի լինի)
+            if (musicToggle) {
+                musicToggle.addEventListener('click', function() {
+                    if(isMusicPlaying) {
+                        bgMusic.pause();
+                        musicToggle.classList.add('muted');
+                        musicToggle.style.opacity = '0.6';
+                    } else {
+                        bgMusic.play().then(() => {
+                            musicToggle.classList.remove('muted');
+                            musicToggle.style.opacity = '1';
+                        }).catch(e => {
+                            console.log("Չհաջողվեց միացնել երգը:", e);
+                        });
+                    }
+                    isMusicPlaying = !isMusicPlaying;
+                });
+            }
                     // --- Scroll Animations (Սահուն հայտնվելը) ---
                     const revealEls = document.querySelectorAll('.reveal');
                     const observer = new IntersectionObserver((entries) => {
